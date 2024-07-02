@@ -1,4 +1,4 @@
-Connectify Web App
+**Connectify Web App**
 
 Overview: Developed a full-featured social media web application enabling users to create and explore posts, send friend requests, and chat in real time. Integrated AI for assisting users during post creation.
 

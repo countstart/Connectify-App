@@ -18,11 +18,11 @@ AI Integration: Google Gemini API
 
 Key Features:
 
-User Management: Implemented secure login and signup features with JWT for authentication and authorization.
-Post Creation and Exploration: Enabled users to create posts and explore content created by others.
-Friendship Management: Users can send and accept friend requests to connect with others.
-Real-time Chat: Facilitated real-time messaging between friends using Socket.io.
-AI Assistance: Integrated Google Gemini API to provide AI-driven suggestions and discussions during post creation.
+*User Management: Implemented secure login and signup features with JWT for authentication and authorization.
+*Post Creation and Exploration: Enabled users to create posts and explore content created by others.
+*Friendship Management: Users can send and accept friend requests to connect with others.
+*Real-time Chat: Facilitated real-time messaging between friends using Socket.io.
+*AI Assistance: Integrated Google Gemini API to provide AI-driven suggestions and discussions during post creation.
 
 Responsibilities:
 

@@ -4,6 +4,7 @@ const Message = require('../models/messageModel');
 const expressAsyncHandler = require('express-async-handler')
 const generateToken = require('../config/generateToken')
 const { v4: uuidv4 } = require('uuid');
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const registerController = expressAsyncHandler ( async (req,res)=>{
     const {username,email,password} = req.body;
@@ -214,6 +215,36 @@ const uploadMyContent = expressAsyncHandler(async(req,res)=>{
     }
 })
 
+const promptResponse = expressAsyncHandler(async(req,res)=>{
+    const promptReq = req.body.prompt;
+    const API_KEY = `${process.env.PROMPT_API_KEY}`;
+    const genAI = new GoogleGenerativeAI(API_KEY);
+
+    const generationConfig = {
+        stopSequences: ["red"],
+        maxOutputTokens: 200,
+        temperature: 0.9,
+        topP: 0.1,
+        topK: 16,
+    };
+
+    // The Gemini 1.5 models are versatile and work with most use cases
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    async function run() {
+        const prompt = promptReq
+
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const text = response.text();
+        console.log(text);
+        res.send(text)
+    }
+
+    run();
+
+})
+
 module.exports = {
     loginController,
     registerController,
@@ -227,5 +258,6 @@ module.exports = {
     fetchAllMessages,
     updateMessages,
     fetchMyUploads,
-    uploadMyContent
+    uploadMyContent,
+    promptResponse
 }

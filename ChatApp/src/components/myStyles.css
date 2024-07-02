@@ -98,6 +98,10 @@
     border-radius: 10px;
 }
 
+button:hover{
+    cursor:pointer;
+}
+
 .all-users-div{
     width: 50vw;
     background-color: antiquewhite;
@@ -231,8 +235,82 @@
 
 /*          uploads         */
 
+.new-uploads-div{
+    display: flex;
+    flex-direction: row;
+    width: 90vw;
+}
+
+.prompt{
+    height: 80vh;
+    /* border: 1px solid black; */
+    width:30%;
+    margin: 20px;
+    background-color: cadetblue;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.prompt-chatarea{
+    /* border: 1px solid black; */
+    height:90%;
+    
+}
+.prompt-msg{
+    /* border: 1px solid black; */
+    margin: 10px;
+    height:93%;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    overflow: auto;
+}
+.prompt-input-area{
+    /* border: 1px solid black; */
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 10%;
+}
+.prompt-input{
+    width: 80%;
+    margin-left: 10px;
+    padding: 10px;
+    border:none;
+    border-radius: 10px;
+}
+
+.prompt-response-para{
+    line-height: 25px;
+}
+.prompt-loader{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.prompt-loader hr{
+    border-radius: 4px;
+    border: none;
+    background-color: #f6f7f8;
+    background: linear-gradient(to right,#9ed7ff,#ffffff,#9ed7ff);
+    background-size: 800px 50px;
+    height: 20px;
+    animation: loader 3s infinite linear;
+}
+
+@keyframes loader{
+    0%{
+        background-position: -800px 0px;
+    }
+    100%{
+        background-position: 800px 0px;
+    }
+}
+
 .new-uploads{
-    width:80vw;
+    width:70%;
     height: 80vh;
     margin: 20px;
     background-color:cadetblue;
@@ -345,6 +423,7 @@
     color: black;
     border-radius: 10px;
     height: 40%;
+    overflow: auto;
 }
 .uploaded-content-texts h3{
     padding: 10px;
@@ -358,3 +437,4 @@
     justify-content: center;
     margin: 20px 0px;
 }
+

@@ -10,6 +10,9 @@ function UploadNew() {
     const [imageUrl, setImageUrl] = useState(null);
     const [title,setTitle] = useState("");
     const [description,setDescription] = useState("");
+    const [prompt , setPrompt] = useState("");
+    const [promptResponse , setPromptResponse] = useState("");
+    const [loading,setLoading] = useState(false);
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -64,39 +67,116 @@ function UploadNew() {
       
     },[])
 
+    function formatText(text) {
+        // Replace bold formatting
+        text = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+        // Replace line breaks
+        text = text.replace(/\*/g, '</br>');
+        return text;
+    }
+
+    const handlePromptResponse = ()=>{
+        setLoading(true);
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userData.data.token}`,
+            }
+        };
+
+        const sendPrompt = async ()=>{
+            try {
+                const response = await axios.post(
+                    "http://localhost:8000/user/getPromptResponse",
+                    {
+                        prompt : prompt
+                    },
+                    config
+                )
+                if(response){
+                    console.log(response.data);
+                    let responseText = response.data; 
+                    // let responseArray = responseText.split("**");
+                    // console.log(responseArray)
+                    // let newResponse;
+                    // for(let i=0 ; i<responseArray.length ; i++){
+                    //     if(i==0 || i%2!==1){
+                    //         newResponse += responseArray[i];
+                    //     }
+                    //     else{
+                    //         newResponse += "<b>"+responseArray[i]+"</b>";
+                    //     }
+                    // }
+                    // let newResponse2 = newResponse.split("*").join("</br>")
+                    // console.log(newResponse2)
+                    // setPromptResponse(newResponse2)
+
+                    const formattedText = formatText(responseText);
+                    console.log(formattedText)
+                    setPromptResponse(formattedText)
+                    setLoading(false);
+                }
+                
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        sendPrompt()
+    }
+
     return (
-    <div className='new-uploads'>
-        <div className='img-text-div'>
-            <div className='newupload-image-div'>
-                <div className='image-div'>
-                    {selectedFile && (
-                        <div>
-                            {/* <p>Selected file: {selectedFile.name}</p> */}
-                            <img
-                                src={imageUrl}
-                                alt="Selected"
-                                style={{ maxWidth: '100%', maxHeight: '300px' }}
-                            />
-                        </div>
-                    )}
+    <div className='new-uploads-div'>
+        <div className='new-uploads'>
+            <div className='img-text-div'>
+                <div className='newupload-image-div'>
+                    <div className='image-div'>
+                        {selectedFile && (
+                            <div>
+                                {/* <p>Selected file: {selectedFile.name}</p> */}
+                                <img
+                                    src={imageUrl}
+                                    alt="Selected"
+                                    style={{ maxWidth: '100%', maxHeight: '300px' }}
+                                />
+                            </div>
+                        )}
+                    </div>
+                    <div>
+                        <input type="file" accept="image/*" className='input-image' onChange={handleFileChange}/>
+                        {/* <button>Choose an Image</button> */}
+                    </div>
                 </div>
-                <div>
-                    <input type="file" accept="image/*" className='input-image' onChange={handleFileChange}/>
-                    {/* <button>Choose an Image</button> */}
+                <div className='title-des-div'>
+                    <div className='title-div'>
+                        <label htmlFor="title">Title</label>
+                        <textarea id="title" rows="2" cols="40" className='title-input' value={title} onChange={(e)=>setTitle(e.target.value)}></textarea>
+                    </div>
+                    <div className='des-div'>
+                        <label htmlFor="description">Description</label>
+                        <textarea id="description" rows="10" cols="40" className='des-input' value={description} onChange={(e)=>setDescription(e.target.value)}></textarea>
+                    </div>
                 </div>
             </div>
-            <div className='title-des-div'>
-                <div className='title-div'>
-                    <label htmlFor="title">Title</label>
-                    <textarea id="title" rows="2" cols="40" className='title-input' value={title} onChange={(e)=>setTitle(e.target.value)}></textarea>
+            <button className='upload-btn' onClick={handleOnUpload} >Upload</button>
+        </div>
+        <div className='prompt'>
+            <div className='prompt-chatarea'>
+                <div className='prompt-msg'>
+                    {loading ? 
+                    <div className='prompt-loader'>
+                        <hr />
+                        <hr />
+                        <hr />
+                    </div> : 
+                    <p className='prompt-response-para' dangerouslySetInnerHTML={{__html:promptResponse}}></p>}
                 </div>
-                <div className='des-div'>
-                    <label htmlFor="description">Description</label>
-                    <textarea id="description" rows="10" cols="40" className='des-input' value={description} onChange={(e)=>setDescription(e.target.value)}></textarea>
-                </div>
+            </div>
+            <div className='prompt-input-area'>
+                <input className='prompt-input' type="text" placeholder='Type your prompt...' value={prompt} onChange={(e)=>setPrompt(e.target.value)}/>
+                <button onClick={handlePromptResponse}>Send</button>
             </div>
         </div>
-        <button className='upload-btn' onClick={handleOnUpload} >Upload</button>
     </div>
   )
 }

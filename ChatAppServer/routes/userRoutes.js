@@ -1,7 +1,7 @@
 const express = require('express')
 const Router = express.Router()
 const expressAsyncHandler = require('express-async-handler')
-const {loginController,registerController, fetchAllUsers, fetchRequestSent, updateRequestRecieved, fetchRequestRecieve, acceptFriend, fetchFriends, fetchFriendsChatId, fetchAllMessages,updateMessages, fetchMyUploads, uploadMyContent} = require('../controllers/userController')
+const {loginController,registerController, fetchAllUsers, fetchRequestSent, updateRequestRecieved, fetchRequestRecieve, acceptFriend, fetchFriends, fetchFriendsChatId, fetchAllMessages,updateMessages, fetchMyUploads, uploadMyContent, promptResponse} = require('../controllers/userController')
 const { protect } = require('../middlewares/authmiddleware')
 const multer = require('multer')
 
@@ -31,5 +31,6 @@ Router.post("/fetchAllMessages",protect,fetchAllMessages)
 Router.post("/updateMessages",protect,updateMessages)
 Router.post("/uploadContent",protect,upload.single("image"),uploadMyContent)
 Router.get("/fetchMyUploads",protect,fetchMyUploads)
+Router.post("/getPromptResponse",protect,promptResponse)
 
 module.exports = Router
